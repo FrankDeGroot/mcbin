@@ -1,0 +1,3 @@
+#!/bin/sh
+
+`dirname $0`/bin/mcsendconsole "say Server will shutdown soon!"

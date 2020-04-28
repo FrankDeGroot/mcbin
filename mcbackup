@@ -1,0 +1,13 @@
+#!/bin/bash
+bin=`dirname $0`
+backups=~/backups
+
+systemctl --user --quiet is-active mc && $bin/mcsendconsole "/say Starting backup..." && $bin/mcsendconsole "save-off"
+systemctl --user --quiet is-active mc && $bin/mcsendconsole "save-all"
+mkdir -p $backups
+tar -cvpzf $backups/server-$(date +%F-%H-%M).tar.gz -C ~/server --exclude common/logs .
+systemctl --user --quiet is-active mc && $bin/mcsendconsole "/say Backup done!" && $bin/mcsendconsole "save-on"
+
+# Delete older backups
+find $backups/ -type f -mtime +7 -name '*.gz' -delete
+

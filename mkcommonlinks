@@ -1,0 +1,3 @@
+#!/bin/sh
+
+for n in ~/server/common/*; do ln -rs $n `basename $n`; done

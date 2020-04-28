@@ -1,0 +1,36 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+	echo "`basename $0` <version> <url>"
+	exit 1
+fi
+
+bin=`dirname $0`
+
+if [ -n "$2" ]; then
+	echo Downloading $2
+	curl -o ~/server.jar $2
+fi
+if [ ! -e ~/server.jar]; then
+	echo No URL supplied, expected ~/server.jar.
+	exit 1
+fi
+
+pwd=`pwd`
+cd ~/server/snapshot
+
+if [ "`readlink ../current`" = "snapshot" ]; then
+	echo Stop server
+	$bin/mcstop
+fi	
+
+mv ~/server.jar server.$1.jar
+rm server.jar
+ln -rs server.$1.jar server.jar
+
+if [ "`readlink ../current`" = "snapshot" ]; then
+	echo Start server
+	$bin/mcstart
+fi	
+
+cd $pwd

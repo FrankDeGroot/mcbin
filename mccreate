@@ -1,0 +1,17 @@
+#!/bin/sh
+
+./update
+sudo apt install -y openjdk-8-jre-headless
+
+mkdir -p ~/{backups,server}
+mkdir -p ~/.config/systemd/user
+ln ~/bin/mc.service ~/.config/systemd/user/mc.service
+loginctl enable-linger mc
+systemctl --user daemon-reload
+./mcenable
+./mcstart
+
+crontab -l 2>/dev/null | grep -q 'mcshutdownwarning' || (crontab -l 2>/dev/null; echo "21 55 * * * $HOME/bin/mcshutdownwarning") | crontab -
+crontab -l 2>/dev/null | grep -q 'mcbackup' || (crontab -l 2>/dev/null; echo "21 55 * * * $HOME/bin/mcbackup") | crontab -
+sudo timedatectl set-timezone Europe/Amsterdam
+sudo systemctl restart crond
