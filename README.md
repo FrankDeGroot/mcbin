@@ -25,3 +25,10 @@ Minecraft bin folder with some useful commands, based on [this tutorial](https:/
 * `git clone https://github.com/FrankDeGroot/mcbin.git ~/bin`
 * `PATH=~/bin:$PATH` in your `.bash_aliases` or whatever favorite startup script you have.
 * `mccreate` though I don't recommend running it blindly.
+
+# Add Server
+* `mkdir ~/server/newserver`
+* `cd ~/server/newserver`
+* Add `server.jar` and other desired jars (e.g. forge).
+* Optionally add world(s), link current with `ln -rs newworld world`.
+* `mccommonlinks`
