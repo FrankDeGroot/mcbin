@@ -1,9 +1,31 @@
 #!/bin/sh
 
+# Setup server
+# `build-essentials` is only required if you don't have mcrcon yet
 ./update
 sudo apt install -y openjdk-8-jre-headless
 
-mkdir -p ~/{backups,server}
+if [ -e "~/backups" ]; then
+	# New server with backup (assumed in ~/backups)
+	./mcrestore
+fi
+
+if [ -e "~/bin/mcrcon" ]; then
+	# Build mcrcon if not present
+	sudo apt install -y build-essential
+	mkdir -p ~/{backups,server}
+	pwd=`pwd`
+	cd ../github_mcrcon
+	git submodule init
+	git submodule update
+	gcc -std=gnu11 -pedantic -Wall -Wextra -O2 -s -o mcrcon mcrcon.c
+	mv mcrcon ~/bin
+	cd $pwd
+	sudo apt remove -y build-essential
+	sudo apt autoremove -y
+fi
+
+# Set systemd user service
 mkdir -p ~/.config/systemd/user
 ln ~/bin/mc.service ~/.config/systemd/user/mc.service
 loginctl enable-linger mc

@@ -1,6 +1,7 @@
 #!/bin/sh
 
-while !(~/server/mcrcon -H 127.0.0.1 -P 25575 -p `grep rcon.password ~/server/common/server.properties | cut -c15-` "$1"); do
+bin=`dirname $0`
+while !($bin/mcrcon -H 127.0.0.1 -P 25575 -p `grep rcon.password ~/server/common/server.properties | cut -c15-` "$1"); do
 	echo "Unable to send '$1', retrying..."
 	sleep 1
 done
