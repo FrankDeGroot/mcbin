@@ -1,7 +1,9 @@
 #!/bin/sh
 
 bin=`dirname $0`
-while !($bin/mcrcon -H 127.0.0.1 -P 25575 -p `grep rcon.password ~/server/common/server.properties | cut -c15-` "$1"); do
-	echo "Unable to send '$1', retrying..."
+counter=0
+while !($bin/mcrcon -H 127.0.0.1 -P 25575 -p `grep rcon.password ~/server/common/server.properties | cut -c15-` "$1" || [ $counter -gt 30 ]); do
+	echo "Unable to send '$1' attempt '$counter', retrying..."
 	sleep 1
+	counter=$((counter + 1))
 done
