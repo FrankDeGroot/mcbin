@@ -6,7 +6,7 @@ KillMode=none
 SuccessExitStatus=0 1
 Restart=on-failure
 WorkingDirectory=/home/mc/server/current
-ExecStart=/usr/bin/java -Xmx1024M -Xms512M -jar server.jar nogui
+ExecStart=/usr/bin/java -Xmx1024M -Xms1024M -jar server.jar nogui
 ExecStop=/home/mc/bin/mcstopwait $MAINPID
 
 [Install]
